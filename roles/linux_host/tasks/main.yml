@@ -1,0 +1,27 @@
+---
+# tasks file for linux_host
+- service_facts:
+
+#- name: Display ansible facts
+#  debug:
+#    var: ansible_facts
+
+- name: Disable SELinux
+  selinux:
+    state: disabled
+  when: ansible_facts.selinux.status is defined
+
+- name: Ensure packages are installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ installpackages }}"
+
+- name: Stop and disable services
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  when: "item in service_names"
+  loop: "{{ stop_services }}"

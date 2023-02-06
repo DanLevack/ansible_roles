@@ -1,0 +1,11 @@
+---
+# vars file for linux_host
+installpackages:
+  - net-tools
+  - vim
+  - emacs
+  - traceroute
+  - nmap
+stop_services:
+  - firewalld.service
+service_names: "{{ services|dict2items|map(attribute='value.name')|list }}"
